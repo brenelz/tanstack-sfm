@@ -1,11 +1,13 @@
 import { createRouter as createTanstackRouter } from '@tanstack/react-router'
 import { routerWithQueryClient } from '@tanstack/react-router-with-query'
+import { registerGlobalMiddleware } from '@tanstack/react-start'
 import * as TanstackQuery from './integrations/tanstack-query/root-provider'
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 
 import './styles.css'
+import { singleFlightMiddleware } from './lib/sfm'
 
 // Create a new router instance
 export const createRouter = () => {
@@ -23,6 +25,10 @@ export const createRouter = () => {
 
   return router
 }
+
+registerGlobalMiddleware({
+  middleware: [singleFlightMiddleware],
+})
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
